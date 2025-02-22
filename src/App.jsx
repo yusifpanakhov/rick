@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './App.css';
 
 const App = () => {
   const [data, setData] = useState(null);
@@ -14,41 +15,43 @@ const App = () => {
       const res = await response.json();
       setData(res);
     } catch (err) {
-      setError(err.message); 
+      setError(err.message);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchInfo(); 
-    }, []);
+    fetchInfo();
+  }, []);
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div className="loading">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>; 
+    return <div className="error">Error: {error}</div>;
   }
 
   if (!data?.results || data.results.length === 0) {
-    return <div>No characters found</div>; 
+    return <div className="no-characters">No characters found</div>;
   }
 
   return (
     <div className="container">
-      <div className="character-grid">
+      <div className="card-grid">
         {data.results.map((character) => (
-          <div key={character.id} className="character-card">
+          <div key={character.id} className="card">
             <img
               src={character.image}
               alt={character.name}
-              className="character-image"
+              className="card-image"
             />
-            <h3>{character.name}</h3>
-            <p><strong>Species:</strong> {character.species}</p>
-            <p><strong>Status:</strong> {character.status}</p>
+            <div className="card-content">
+              <h3>{character.name}</h3>
+              <p><strong>Species:</strong> {character.species}</p>
+              <p><strong>Status:</strong> {character.status}</p>
+            </div>
           </div>
         ))}
       </div>
